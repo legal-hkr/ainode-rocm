@@ -48,18 +48,20 @@ Follow these steps to get your PrivadoAI stack up and running:
 4.  **Review and configure Docker Compose files:**
     The `compose.yml` file defines the services (containers) that make up the stack and how they interact. The `Dockerfile` files in `docker/*` directories contain instructions for building the Docker images for each service. Examine the `compose.yml` and `Dockerfile` files to understand the stack's configuration, mainly the reverse proxy configuration in the `data/reverseproxy/sites-enabled` directory. Some examples can be found in the `examples/reverseproxy` directory. You should also set UIDs and GIDs in the `compose.yml` according to your environment. Also, make sure that `ENABLE_SIGNUP` in the `docker/openwebui/Dockerfile` is initially set to `true` so you can create the admin account. You can change it to `false` afterwards.
 
-4.  **Build and run the stack:**
+5.  **Build and run the stack:**
     Navigate to the repository directory and start the Docker containers:
     ```bash
     cd ainode && docker compose up -d
     ```
     The `-d` flag runs the containers in detached mode (in the background). It is highly suggested to run the stack without `-d` at first to monitor the startup process.
 
-5.  **Access the interfaces:**
+6.  **Access the interfaces:**
     *   The standard Open WebUI interface will be accessible via port `443` (HTTPS).
     *   The Amnesic Open WebUI interface will be accessible via port `8443` (HTTPS).
     *   The Ollama API will be accessible on the standard port `11434`.
 
     You can access these interfaces using your web browser or with tools like `curl` or `Postman`.
 
-6.  In addition, you can access the i3 on Desktop via port `3389` (RDP).
+7.  **(Optional) Access the i3 desktop:**
+
+    In addition, you can access the i3 on Desktop via port `3389` (RDP).
