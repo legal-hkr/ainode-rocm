@@ -19,9 +19,8 @@ This repository contains Docker configuration files and source code for setting 
 ## Repository Structure
 The repository is organized as follows:
 
-*   `data` - Directory for storing data used by the stack.
 *   `docker` - Contains Dockerfiles for all stack components.
-*   `ssl` - Contains the SSL certificate and key for the Nginx reverse proxy server.
+*   `examples` - Contains configuration examples.
 
 ## Prerequisites
 
