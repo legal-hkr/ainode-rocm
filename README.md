@@ -1,4 +1,4 @@
-# openwebui-stack-rocm
+# ainode-rocm
 
 ## Description
 
@@ -32,7 +32,7 @@ Follow these steps to get your PrivadoAI stack up and running:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/legal-hkr/openwebui-stack-rocm.git
+    git clone https://github.com/legal-hkr/ainode-rocm.git ainode
     ```
     This command will download the repository to your local machine. Make sure you have Git installed.
 
@@ -40,12 +40,12 @@ Follow these steps to get your PrivadoAI stack up and running:
     Copy the `server.crt` and `server.key` files into the `ssl` directory. These files are used for secure communication via HTTPS. You can generate your own self-signed certificates or use a certificate from a trusted Certificate Authority (CA).
 
 3.  **Review and configure Docker Compose files:**
-    Examine the `compose.yml` and `Dockerfile` files to understand the stack's configuration. The `compose.yml` file defines the services (containers) that make up the stack and how they interact. The `Dockerfile` contains instructions for building the Docker images for each service. Example configuration will be provided in the future to simplify the setup process.
+    Examine the `compose.yml` and `Dockerfile` files to understand the stack's configuration, mainly the reverse proxy configuration in the `data/reverseproxy/sites-enabled` directory. The `compose.yml` file defines the services (containers) that make up the stack and how they interact. The `Dockerfile` contains instructions for building the Docker images for each service. Example configuration will be provided in the future to simplify the setup process.
 
 4.  **Build and run the stack:**
     Navigate to the repository directory and start the Docker containers:
     ```bash
-    cd openwebui-stack-rocm && docker compose up -d
+    cd ainode && docker compose up -d
     ```
     The `-d` flag runs the containers in detached mode (in the background). It is highly suggested to run the stack without `-d` at first to monitor the startup process.
 
