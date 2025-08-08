@@ -1,4 +1,4 @@
-# ainode-rocm
+# AINode (ROCm)
 
 ## Description
 

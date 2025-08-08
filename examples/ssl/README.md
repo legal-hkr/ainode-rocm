@@ -1,10 +1,10 @@
-## Local CA Setup
+# Local CA Setup
 
-### Introduction
+## Introduction
 
 This guide will walk you through setting up a local Certificate Authority (CA) and generating SSL certificates for your awesome projects. Having your own CA gives you more control, which can be of help if you're running a multi-container setup.
 
-### Prerequisites
+## Prerequisites
 
 Make sure you have the following installed:
 
@@ -19,7 +19,7 @@ Nice to have:
 
 *   **Basic Linux command-line knowledge:** You should be comfortable navigating directories and running commands. If you're a complete newbie, DuckDuckGo is your friend.
 
-### Configuration steps
+## Configuration steps
 
 1.  **Create the CA directory structure in a location of your choice,:**
 
@@ -103,7 +103,7 @@ Nice to have:
 
     You should also install the `certs/ca.crt` as a local CA for your web browser.
 
-###  Important considerations
+##  Important considerations
 
 *   **Security is paramount:** Protect your CA private key (`private/ca.key`).  If it's compromised, your entire PKI is compromised.
 *   **Key Rotation:** In a production environment, regularly rotate your CA key and certificate to minimize the impact of potential security breaches.
