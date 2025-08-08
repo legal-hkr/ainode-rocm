@@ -39,7 +39,7 @@ Follow these steps to get your PrivadoAI stack up and running:
 
 2.  **Create the data directory structure:**
     ```bash
-    mkdir -p data/{chroma,comfyui/config,comfyui/custom_nodes,common/models,desktop/home,desktop/home_i3,ollama,openwebui/data,reverseproxy/sites_enabled}
+    mkdir -p data/{chroma,comfyui/config,comfyui/custom_nodes,common/models,desktop/home,desktop/home_i3,ollama,openwebui/data,reverseproxy/sites_enabled} ssl
     ```
 
 3.  **Place SSL certificates:**
