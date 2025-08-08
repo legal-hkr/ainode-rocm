@@ -36,11 +36,16 @@ Follow these steps to get your PrivadoAI stack up and running:
     ```
     This command will download the repository to your local machine. Make sure you have Git installed.
 
-2.  **Place SSL certificates:**
-    Copy the `server.crt` and `server.key` files into the `ssl` directory. These files are used for secure communication via HTTPS. You can generate your own self-signed certificates or use a certificate from a trusted Certificate Authority (CA).
+2.  **Create the data directory structure:**
+    ```bash
+    mkdir -p data/{chroma,comfyui/config,comfyui/custom_nodes,common/models,desktop/home,desktop/home_i3,ollama,openwebui/data,reverseproxy/sites_enabled}
+    ```
 
-3.  **Review and configure Docker Compose files:**
-    Examine the `compose.yml` and `Dockerfile` files to understand the stack's configuration, mainly the reverse proxy configuration in the `data/reverseproxy/sites-enabled` directory. Also, make sure that `ENABLE_SIGNUP` in the `docker/openwebui/Dockerfile` is initially set to `true` so you can create the admin account. You can change it to `false` afterwards. The `compose.yml` file defines the services (containers) that make up the stack and how they interact. The `Dockerfile` contains instructions for building the Docker images for each service. Example configuration will be provided in the future to simplify the setup process.
+3.  **Place SSL certificates:**
+    Copy the `ainode.crt` and `ainode.key` files into the `ssl` directory. These files are used for secure communication via HTTPS. You can generate your own self-signed certificates or use a certificate from a trusted Certificate Authority (CA), example on how to do that can be found in the `examples/ssl` directory.
+
+4.  **Review and configure Docker Compose files:**
+    The `compose.yml` file defines the services (containers) that make up the stack and how they interact. The `Dockerfile` files in `docker/*` directories contain instructions for building the Docker images for each service. Examine the `compose.yml` and `Dockerfile` files to understand the stack's configuration, mainly the reverse proxy configuration in the `data/reverseproxy/sites-enabled` directory. Some examples can be found in the `examples/reverseproxy` directory. You should also set UIDs and GIDs in the `compose.yml` according to your environment. Also, make sure that `ENABLE_SIGNUP` in the `docker/openwebui/Dockerfile` is initially set to `true` so you can create the admin account. You can change it to `false` afterwards.
 
 4.  **Build and run the stack:**
     Navigate to the repository directory and start the Docker containers:
