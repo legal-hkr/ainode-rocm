@@ -26,11 +26,32 @@ The repository is organized as follows:
 
 *   System with AMD ROCm toolkit installed, the stack was built and tested on Linux.
 *   Docker and Docker Compose installed, Podman should work, too.
-
 ## Getting Started
 
-[Information on how to run the stack will go here]
+Follow these steps to get your PrivadoAI stack up and running:
 
-## Contributing
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/legal-hkr/openwebui-stack-rocm.git
+    ```
+    This command will download the repository to your local machine. Make sure you have Git installed.
 
-[Information on how to contribute to the project will go here]
+2.  **Place SSL certificates:**
+    Copy the `server.crt` and `server.key` files into the `ssl` directory. These files are used for secure communication via HTTPS. You can generate your own self-signed certificates or use a certificate from a trusted Certificate Authority (CA).
+
+3.  **Review and configure Docker Compose files:**
+    Examine the `compose.yml` and `Dockerfile` files to understand the stack's configuration. The `compose.yml` file defines the services (containers) that make up the stack and how they interact. The `Dockerfile` contains instructions for building the Docker images for each service. Example configuration will be provided in the future to simplify the setup process.
+
+4.  **Build and run the stack:**
+    Navigate to the repository directory and start the Docker containers:
+    ```bash
+    cd openwebui-stack-rocm && docker compose up -d
+    ```
+    The `-d` flag runs the containers in detached mode (in the background). It is highly suggested to run the stack without `-d` at first to monitor the startup process.
+
+5.  **Access the interfaces:**
+    *   The standard Open WebUI interface will be accessible via port `443` (HTTPS).
+    *   The Amnesic Open WebUI interface will be accessible via port `8443` (HTTPS).
+    *   The Ollama API will be accessible on the standard port `11434`.
+
+    You can access these interfaces using your web browser or with tools like `curl` or `Postman`.
