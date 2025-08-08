@@ -14,6 +14,7 @@ This repository contains Docker configuration files and source code for setting 
 *   **ChromaDB:** A vector database for storing and retrieving embeddings, enabling efficient retrieval-augmented generation (RAG).
 *   **Kokoro FastAPI:** A backend for Text-to-Speech (TTS), providing high-quality voice generation.
 *   **Nginx:** A reverse proxy server, managing incoming requests and routing them to the appropriate backend services.
+*   **Desktop:** Not really required, you can safely delete it. It's here in case you want to have a workspace accessible over RDP. By default it is set to run 'i3'.
 
 ## Repository Structure
 The repository is organized as follows:
@@ -60,3 +61,5 @@ Follow these steps to get your PrivadoAI stack up and running:
     *   The Ollama API will be accessible on the standard port `11434`.
 
     You can access these interfaces using your web browser or with tools like `curl` or `Postman`.
+
+6.  In addition, you can access the i3 on Desktop via port `3389` (RDP).
