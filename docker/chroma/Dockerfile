@@ -56,7 +56,6 @@ RUN git checkout ${CHROMADB_VERSION}
 RUN pip3 install cffi fastapi maturin opentelemetry-instrumentation opentelemetry-instrumentation-fastapi patchelf
 RUN pip3 install -r /home/user/app/requirements.txt
 RUN if [ "$REBUILD_HNSWLIB" = "true" ]; then pip3 install --no-binary :all: --force-reinstall chroma-hnswlib; fi
-#RUN pip3 install grpcio==1.58.0 grpcio-tools==1.58.0
 RUN pip3 install grpcio grpcio-tools
 
 # Install ChromaDB
