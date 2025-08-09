@@ -6,8 +6,6 @@ A self-contained privacy-focused AI stack for interacting with LLMs and Stable D
 
 ## Highlights
 
-Privacy-focused apprach means, that:
-
 A privacy-focused approach is implemented as follows:
 
 *   Telemetry across all components is disabled.
