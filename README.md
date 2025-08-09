@@ -72,7 +72,7 @@ Follow these steps to get your PrivadoAI stack up and running:
     
     You can access these interfaces using your web browser or with tools like `curl` or `Postman`.
 
-    To access ComfyUI and Kokoro FastAPI WebUI, you must properly set your DNS configuration or `/etc/hosts` file to reflect the configuration in the `data/reverseproxy/sites-enabled` directory. If you're running AINode on localhost, you can add the following to your `/etc/hosts `file:
+    To access ComfyUI and Kokoro FastAPI WebUI, you must properly set your DNS configuration or `/etc/hosts` file to reflect the configuration in the `data/reverseproxy/sites-enabled` directory. If you're running AINode on localhost, you can add the following to your `/etc/hosts` file:
     ```configuration
     127.0.0.1   comfyui.localdomain             comfyui
     127.0.0.1   ollama.localdomain              ollama
