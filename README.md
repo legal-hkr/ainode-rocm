@@ -69,8 +69,18 @@ Follow these steps to get your PrivadoAI stack up and running:
     *   The standard Open WebUI interface will be accessible via port `443` (HTTPS).
     *   The Amnesic Open WebUI interface will be accessible via port `8443` (HTTPS).
     *   The Ollama API will be accessible on the standard port `11434`.
-
+    
     You can access these interfaces using your web browser or with tools like `curl` or `Postman`.
+
+    To access ComfyUI and Kokoro FastAPI WebUI, you must properly set your DNS configuration or `/etc/hosts` file to reflect the configuration in the `data/reverseproxy/sites-enabled` directory. If you're running AINode on localhost, you can add the following to your `/etc/hosts `file:
+    ```configuration
+    127.0.0.1   comfyui.localdomain             comfyui
+    127.0.0.1   ollama.localdomain              ollama
+    127.0.0.1   openwebui.localdomain           openwebui
+    127.0.0.1   openwebui-amnesic.localdomain   openwebui-amnesic
+    127.0.0.1   kokoro-fastapi.localdomain      kokoro-fastapi
+    ```
+    With this setup, you can access the components by using the specified hostname in your URL, e.g., `https://comfyui`, `https://openwebui`, etc.
 
 7.  **(Optional) Access the i3 desktop:**
 
