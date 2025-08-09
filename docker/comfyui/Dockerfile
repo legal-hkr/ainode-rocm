@@ -79,8 +79,7 @@ RUN pip3 install .
 RUN rm -rf /home/user/bitsandbytes
 WORKDIR /home/user/app
 
-# Fix VAE running out of memory on ROCm, for larger SD outputs VAE Decode (Tiled) set to 512, 64, 24, 8 should also be used
-# See https://github.com/comfyanonymous/ComfyUI/issues/5759
-ENV MIOPEN_FIND_MODE="2"
+# Using CPU instead of GPU for VAE decoding on a 9950X with RX 7900 XTX makes the decoding 30% faster (sic!)
+# If you have a slow CPU, remove "--cpu-vae"
 
-CMD ["python3", "./main.py", "--listen", "--temp-directory", "/tmp", "--preview-method", "auto"]
+CMD ["python3", "./main.py", "--listen", "--temp-directory", "/tmp", "--preview-method", "auto", "--use-pytorch-cross-attention", "--cpu-vae"]
