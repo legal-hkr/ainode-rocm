@@ -4,9 +4,19 @@
 
 A self-contained privacy-focused AI stack for interacting with LLMs and Stable Diffusion, leveraging AMD's ROCm toolkit.
 
+## Highlights
+
+Privacy-focused apprach means, that:
+
+A privacy-focused approach is implemented as follows:
+
+*   Telemetry across all components is disabled.
+*   Only the primary instance of Open WebUI is authorized to persistently store generated text and images. These can be located within the `data/openwebuui/data` directory.
+*   The amnesic approach utilizes `tmpfs` for mounting input, output, and cache directories. This configuration necessitates periodic container restarts to prevent excessive RAM consumption.
+
 ## Components
 
-This repository contains Docker configuration files and source code for setting up the following components:
+This repository contains Docker configuration files for setting up the following components:
 
 *   **Open WebUI:** A versatile web interface for interacting with various AI models. Includes both the default and amnesic (forgetful) instances.
 *   **Ollama:** A backend for Large Language Models (LLMs), providing a simple and efficient way to run and manage models.
@@ -17,15 +27,18 @@ This repository contains Docker configuration files and source code for setting 
 *   **Desktop:** Not really required, you can safely delete it. It's here in case you want to have a workspace accessible over RDP. By default it is set to run 'i3'.
 
 ## Repository Structure
+
 The repository is organized as follows:
 
 *   `docker` - Contains Dockerfiles for all stack components.
 *   `examples` - Contains configuration examples.
+*   `compose.yml` - Docker Compose configuration file.
 
 ## Prerequisites
 
 *   System with AMD ROCm toolkit installed, the stack was built and tested on Linux.
 *   Docker and Docker Compose installed, Podman should work, too.
+
 ## Getting Started
 
 Follow these steps to get your PrivadoAI stack up and running:
