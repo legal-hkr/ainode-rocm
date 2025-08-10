@@ -23,8 +23,8 @@ RUN apt-get install --no-install-recommends -y ffmpeg git-lfs
 # Add ROCm repository
 RUN mkdir --parents --mode=0755 /etc/apt/keyrings
 RUN curl -sL https://repo.radeon.com/rocm/rocm.gpg.key | gpg --dearmor | tee /etc/apt/keyrings/rocm.gpg > /dev/null
-RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/6.4.2/ubuntu jammy main" | tee /etc/apt/sources.list.d/amdgpu.list
-RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/6.4.2 jammy main" | tee --append /etc/apt/sources.list.d/rocm.list
+RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/6.4.3/ubuntu jammy main" | tee /etc/apt/sources.list.d/amdgpu.list
+RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/6.4.3 jammy main" | tee --append /etc/apt/sources.list.d/rocm.list
 RUN echo 'Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600' | tee /etc/apt/preferences.d/rocm-pin-600
 
 # Install ROCm
@@ -79,7 +79,12 @@ RUN pip3 install .
 RUN rm -rf /home/user/bitsandbytes
 WORKDIR /home/user/app
 
-# Using CPU instead of GPU for VAE decoding on a 9950X with RX 7900 XTX makes the decoding 30% faster (sic!)
-# If you have a slow CPU, remove "--cpu-vae"
+# ROCm supports bfloat16 since version 6.4.1
+# See https://github.com/kasper93/ComfyUI/commit/8d3e5acda351f140fc2b653ffe71bdb14e72e045
+RUN sed -i 's/and (not is_amd()) //g' /home/user/app/comfy/model_management.py
 
-CMD ["python3", "./main.py", "--listen", "--temp-directory", "/tmp", "--preview-method", "auto", "--use-pytorch-cross-attention", "--cpu-vae"]
+# See https://github.com/ROCm/ROCm/issues/4742
+ENV MIOPEN_FIND_MODE="2"
+ENV TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL="1"
+
+CMD ["python3", "./main.py", "--listen", "--temp-directory", "/tmp", "--preview-method", "auto"]

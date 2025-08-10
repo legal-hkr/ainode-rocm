@@ -20,8 +20,8 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install --no-install-re
 # Add ROCm repository
 RUN mkdir --parents --mode=0755 /etc/apt/keyrings
 RUN curl -sL https://repo.radeon.com/rocm/rocm.gpg.key | gpg --dearmor | tee /etc/apt/keyrings/rocm.gpg > /dev/null
-RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/6.4.2/ubuntu jammy main" | tee /etc/apt/sources.list.d/amdgpu.list
-RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/6.4.2 jammy main" | tee --append /etc/apt/sources.list.d/rocm.list
+RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/6.4.3/ubuntu jammy main" | tee /etc/apt/sources.list.d/amdgpu.list
+RUN echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/6.4.3 jammy main" | tee --append /etc/apt/sources.list.d/rocm.list
 RUN echo 'Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600' | tee /etc/apt/preferences.d/rocm-pin-600
 
 # Install ROCm
