@@ -5,6 +5,13 @@ ARG user_gid
 ARG render_gid
 ARG video_gid
 
+# Set the target device (gpu|cpu)
+ENV DEVICE="cpu"
+ENV USE_GPU=false
+
+# Decide if you want to download the voice model during installation
+ENV DOWNLOAD_MODEL=true
+
 WORKDIR /home/user/app
 
 # Fix GIDs for groups to match host
@@ -58,23 +65,18 @@ RUN chmod +x ./*.sh
 # Kokoro FastAPI uses UV
 RUN pip3 install uv --no-cache-dir
 RUN uv venv --python 3.10
-RUN uv sync --extra cpu
-#RUN uv sync --extra gpu
+RUN uv sync --extra $DEVICE
 
+# Kokoro FastAPI specific
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/home/user/app:/home/user/app/api
 ENV UV_LINK_MODE=copy
-ENV USE_GPU=false
 
-# Download voice model
-ENV DOWNLOAD_MODEL=true
+# Download the voice model if needed
 RUN if [ "$DOWNLOAD_MODEL" = "true" ]; then \
         pip3 install loguru && \
         python3 ./download_model.py --output api/src/models/v1_0; \
     fi
-
-# Set the target device (gpu|cpu)
-ENV DEVICE="cpu"
 
 # Default port is 8880
 CMD ["bash", "./entrypoint.sh"]
