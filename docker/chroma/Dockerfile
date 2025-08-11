@@ -49,7 +49,6 @@ ENV PATH="/home/user/.cargo/bin:$PATH"
 # Get ChromaDB
 RUN git clone https://github.com/chroma-core/chroma.git /home/user/app
 WORKDIR /home/user/app
-# Latest version at the moment is 1.1.3
 RUN git checkout ${CHROMADB_VERSION}
 
 # Install ChromaDB's dependencies
