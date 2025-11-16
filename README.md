@@ -9,7 +9,7 @@ A self-contained privacy-focused AI stack for interacting with LLMs and Stable D
 A privacy-focused approach is implemented as follows:
 
 *   Telemetry across all components is disabled.
-*   Only the primary instance of Open WebUI is authorized to persistently store generated text and images. These can be located within the `data/openwebuui/data` directory.
+*   Only the primary instance of Open WebUI is authorized to persistently store generated text and images. These can be located within the `data/openwebui/data` directory.
 *   The amnesic approach utilizes `tmpfs` for mounting input, output, and cache directories. This configuration necessitates periodic container restarts to prevent excessive RAM consumption.
 
 ## Components
