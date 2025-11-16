@@ -22,7 +22,6 @@ This repository contains Docker configuration files for setting up the following
 *   **ChromaDB:** A vector database for storing and retrieving embeddings, enabling efficient retrieval-augmented generation (RAG).
 *   **Kokoro FastAPI:** A backend for Text-to-Speech (TTS), providing high-quality voice generation.
 *   **Nginx:** A reverse proxy server, managing incoming requests and routing them to the appropriate backend services.
-*   **Desktop:** Not really required, you can safely delete it. It's here in case you want to have a workspace accessible over RDP. By default it is set to run 'i3'.
 
 ## Repository Structure
 
@@ -39,7 +38,7 @@ The repository is organized as follows:
 
 ## Getting Started
 
-Follow these steps to get your PrivadoAI stack up and running:
+Follow these steps to get your AINode stack up and running:
 
 1.  **Clone the repository:**
     ```bash
@@ -81,7 +80,3 @@ Follow these steps to get your PrivadoAI stack up and running:
     127.0.0.1   kokoro-fastapi.localdomain      kokoro-fastapi
     ```
     With this setup, you can access the components by using the specified hostname in your URL, e.g., `https://comfyui`, `https://openwebui`, etc.
-
-7.  **(Optional) Access the i3 desktop:**
-
-    In addition, you can access the i3 on Desktop via port `3389` (RDP).

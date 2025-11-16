@@ -49,9 +49,9 @@ services:
         # UID and GID for the user, can be the same as for the local user
         user_uid: 1000
         user_gid: 100
-        # GID of the 'video' group, in Gentoo it's 27, on Debian it's 44
-        # For AMD cards on Gentoo, the 'render' group is also needed (GID for /dev/kfd is 28)
+        # Host's GID of the 'render' group, on Gentoo it's 28
         render_gid: 28
+        # Host's GID of the 'video' group, on Gentoo it's 27
         video_gid: 27
       dockerfile: ./docker/comfyui/Dockerfile
     container_name: ainode-comfyui
@@ -80,41 +80,6 @@ services:
         tmpfs:
           mode: 01777
 
-  # Remote Desktop
-  desktop:
-    <<: *common-render
-    build:
-      args:
-        # Name, UID and GID for the user, can be the same as for the local user
-        username: hkr
-        user_uid: 1000
-        user_gid: 100
-        # Host's GID of the 'video' group, on Gentoo it's 27, on Debian it's 44
-        # For AMD cards on Gentoo, the 'render' group is also needed (GID for /dev/kfd)
-        render_gid: 28
-        video_gid: 27
-      dockerfile: ./docker/desktop/Dockerfile
-    container_name: ainode-desktop
-    hostname: ainode-desktop
-    ipc: host
-    networks:
-      - ainode-internal
-    ports:
-      - 3389:3389
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      # User's home directory - make sure that path involves proper username, same for .cache
-      - ./data/desktop/home:/home/hkr
-      - type: tmpfs
-        target: /home/hkr/.cache
-        tmpfs:
-          mode: 01777
-      - type: tmpfs
-        target: /tmp
-        tmpfs:
-          mode: 01777
-
   # Kokoro FastAPI (API)
   kokoro-fastapi:
     <<: *common-render
@@ -123,9 +88,9 @@ services:
         # UID and GID for the user, can be the same as for the local user
         user_uid: 1000
         user_gid: 100
-        # GID of the 'video' group, in Gentoo it's 27, on Debian it's 44
-        # For AMD cards on Gentoo, the 'render' group is also needed (GID for /dev/kfd is 28)
+        # Host's GID of the 'render' group, on Gentoo it's 28
         render_gid: 28
+        # Host's GID of the 'video' group, on Gentoo it's 27
         video_gid: 27
       dockerfile: ./docker/kokoro-fastapi/Dockerfile
     container_name: ainode-kokoro-fastapi
@@ -154,9 +119,9 @@ services:
         # UID and GID for the user, can be the same as for the local user
         user_uid: 1000
         user_gid: 100
-        # Host's GID of the 'video' group, on Gentoo it's 27, on Debian it's 44
-        # For AMD cards on Gentoo, the 'render' group is also needed (GID for /dev/kfd)
+        # Host's GID of the 'render' group, on Gentoo it's 28
         render_gid: 28
+        # Host's GID of the 'video' group, on Gentoo it's 27
         video_gid: 27
       dockerfile: ./docker/ollama/Dockerfile
     container_name: ainode-ollama

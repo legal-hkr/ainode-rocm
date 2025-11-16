@@ -1,60 +1,54 @@
-FROM debian:bookworm-slim
+FROM archlinux
 
 ARG user_uid
 ARG user_gid
 
-## Settings
-ENV ENV=prod
+# Settings
+ENV ENV="prod"
 ENV WEBUI_SECRET_KEY=""
 ENV HF_HOME="/home/user/app/backend/data/cache/embedding/models"
 ENV SENTENCE_TRANSFORMERS_HOME="/home/user/app/backend/data/cache/embedding/models"
 ENV TIKTOKEN_ENCODING_NAME="cl100k_base"
 ENV TIKTOKEN_CACHE_DIR="/home/user/app/backend/data/cache/tiktoken"
 
-# LLM Backend
+## LLM Backend
 ENV OLLAMA_BASE_URL="http://ainode-ollama:11434"
 ENV OPENAI_API_BASE_URL=""
 ENV OPENAI_API_KEY=""
 
-# Telemetry, mostly for dependencies
-ENV SCARF_NO_ANALYTICS=true
-ENV DO_NOT_TRACK=true
-ENV ANONYMIZED_TELEMETRY=false
+## Telemetry, mostly for dependencies
+ENV SCARF_NO_ANALYTICS="true"
+ENV DO_NOT_TRACK="true"
+ENV ANONYMIZED_TELEMETRY="false"
 
-# Whisper
+## Whisper
 ENV WHISPER_MODEL="base"
 ENV WHISPER_MODEL_DIR="/home/user/app/backend/data/cache/whisper/models"
 
-# RAG
+## RAG
 #ENV RAG_EMBEDDING_ENGINE="http://ainode-ollama:11434"
 ENV RAG_EMBEDDING_MODEL="sdadas/stella-pl-retrieval"
 ENV RAG_RERANKING_MODEL="sdadas/polish-reranker-roberta-v2"
 
-# Configure SSL for Uvicorn
+## Configure SSL for Uvicorn
 ENV UVICORN_SSL_CERTFILE="/home/user/app/ssl/ainode.crt"
 ENV UVICORN_SSL_KEYFILE="/home/user/app/ssl/ainode.key"
 
-# Disable authentication
+## Disable authentication
 ENV DEFAULT_USER_ROLE="admin"
-ENV ENABLE_SIGNUP=false
-ENV WEBUI_AUTH=false
+ENV ENABLE_SIGNUP="false"
+ENV WEBUI_AUTH="false"
 
 WORKDIR /home/user/app
 
 # Fix GIDs for groups to match host
 RUN groupmod -g $user_gid users
+
+# Add a user
 RUN useradd -u $user_uid -r -g users -s /sbin/nologin -m -c "User" user
 
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install --no-install-recommends -y build-essential curl git python3-dev python3-venv python3-pip vim
-
-# Install Open WebUI dependencies. 'apache2-utils' and 'sqlite3' are required for account recovery
-RUN apt-get install --no-install-recommends -y apache2-utils ffmpeg libpq-dev sqlite3
-
-# Install NodeJS
-RUN apt-get install --no-install-recommends -y gpg
-RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
-RUN apt-get update && apt-get install -y --no-install-recommends nodejs
+# Install dependencies
+RUN pacman -Syu --noconfirm && pacman -S --noconfirm apache ffmpeg git npm python-pipenv sqlite vim
 
 # Prepare the runtime environment
 RUN chown -R user:users /home/user
@@ -68,22 +62,25 @@ RUN mkdir -p /home/user/app/.cache/chroma
 RUN echo -n 00000000-0000-0000-0000-000000000000 > /home/user/app/.cache/chroma/telemetry_user_id
 
 # Prepare Python virtual environment
-RUN python3 -m venv /home/user/venv
+RUN python -m venv /home/user/venv
 ENV PATH="/home/user/venv/bin:$PATH"
-RUN pip3 install virtualenv --no-cache-dir
-RUN pip3 install --upgrade pip setuptools GitPython --no-cache-dir
+RUN pip install virtualenv --no-cache-dir
+RUN pip install --upgrade pip setuptools GitPython --no-cache-dir
 
 # Install backend dependencies
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir
-RUN pip3 install -r /home/user/app/backend/requirements.txt --no-cache-dir
-RUN pip3 install hf_xet
-RUN python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')"
-RUN python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"
-RUN python3 -c "import os; import tiktoken; tiktoken.get_encoding(os.environ['TIKTOKEN_ENCODING_NAME'])"
+RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir
+## Fix matching distribution error for rapidocr-onnxruntime
+RUN sed -i 's/rapidocr-onnxruntime==1.4.4/rapidocr-onnxruntime/g' /home/user/app/backend/requirements.txt
+RUN pip install -r /home/user/app/backend/requirements.txt --no-cache-dir
+## Fix audioop missing (deprecated as of Python 3.13), see https://github.com/jiaaro/pydub/issues/725#issuecomment-2439291764
+RUN pip install audioop-lts hf_xet --no-cache-dir
+RUN python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')"
+RUN python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"
+RUN python -c "import os; import tiktoken; tiktoken.get_encoding(os.environ['TIKTOKEN_ENCODING_NAME'])"
 
 # Build frontend
-# "--force" is a workaround for the dependency resolving issue, see https://github.com/open-webui/open-webui/issues/15880
+## "--force" is a workaround for the dependency resolving issue, see https://github.com/open-webui/open-webui/issues/15880
 RUN npm ci --force
 RUN npm run build
 
-CMD ["bash", "./backend/start.sh"]
+CMD ["sh", "./backend/start.sh"]
