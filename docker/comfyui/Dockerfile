@@ -63,8 +63,8 @@ RUN pip install pywavelets --no-cache-dir
 
 # Build and install bitsandbytes with ROCm support
 # See https://huggingface.co/docs/bitsandbytes/main/en/installation#multi-backend
-RUN git clone https://github.com/bitsandbytes-foundation/bitsandbytes.git /home/user/bitsandbytes
 WORKDIR /home/user/bitsandbytes
+RUN git clone https://github.com/bitsandbytes-foundation/bitsandbytes.git /home/user/bitsandbytes
 RUN HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" cmake -S . -DCOMPUTE_BACKEND=hip -DBNB_ROCM_ARCH="gfx1100"
 RUN make
 RUN pip install .
