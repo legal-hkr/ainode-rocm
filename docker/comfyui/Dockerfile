@@ -1,26 +1,26 @@
 FROM archlinux
 
-ARG user_uid
-ARG user_gid
-ARG render_gid
-ARG video_gid
+ARG USER_UID
+ARG USER_GID
+ARG RENDER_GID
+ARG VIDEO_GID
 
 WORKDIR /home/user/app
 
 # Fix GIDs for groups to match host
-RUN groupmod -g $user_gid users
-RUN groupmod -g $render_gid render
-RUN groupmod -g $video_gid video
+RUN groupmod -g ${USER_GID} users
+RUN groupmod -g ${RENDER_GID} render
+RUN groupmod -g ${VIDEO_GID} video
 
 # Add a user
-RUN useradd -u $user_uid -r -g users -G render,video -s /sbin/nologin -m -c "User" user
+RUN useradd -u ${USER_UID} -r -g users -G render,video -s /sbin/nologin -m -c "User" user
 
 # Install dependencies
 RUN pacman -Syu --noconfirm && pacman -S --noconfirm base-devel ffmpeg git git-lfs python-pipenv rocm-hip-sdk vim
 
 # Update paths to include ROCm
 ENV ROCM_PATH="/opt/rocm"
-ENV PATH="$PATH:/opt/rocm/bin"
+ENV PATH="${PATH}:/opt/rocm/bin"
 
 RUN chown -R user:users /home/user
 
@@ -31,7 +31,7 @@ RUN git lfs install
 
 # Prepare Python virtual environment
 RUN python -m venv /home/user/venv
-ENV PATH="/home/user/venv/bin:$PATH"
+ENV PATH="/home/user/venv/bin:${PATH}"
 RUN pip install virtualenv --no-cache-dir
 RUN pip install --upgrade pip setuptools GitPython --no-cache-dir
 

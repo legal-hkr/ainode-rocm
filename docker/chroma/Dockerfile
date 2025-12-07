@@ -1,7 +1,7 @@
 FROM archlinux
 
-ARG user_uid
-ARG user_gid
+ARG USER_UID
+ARG USER_GID
 
 # Configuration
 ## Chroma-specific. ChromaDB has to be the same version as in Open WebUI
@@ -19,10 +19,10 @@ ENV PERSIST_DIRECTORY="/home/user/app/chroma"
 WORKDIR /home/user
 
 # Fix GIDs for groups to match host
-RUN groupmod -g $user_gid users
+RUN groupmod -g ${USER_GID} users
 
 # Add a user
-RUN useradd -u $user_uid -r -g users -s /sbin/nologin -m -c "User" user
+RUN useradd -u ${USER_UID} -r -g users -s /sbin/nologin -m -c "User" user
 
 # Install dependencies
 RUN pacman -Syu --noconfirm && pacman -S --noconfirm base-devel git protobuf python-pipenv rust unzip vim
@@ -34,7 +34,7 @@ USER user
 
 # Setup venv
 RUN python -m venv /home/user/venv
-ENV PATH="/home/user/venv/bin:$PATH"
+ENV PATH="/home/user/venv/bin:${PATH}"
 RUN pip install virtualenv --no-cache-dir
 RUN pip install --upgrade pip setuptools GitPython --no-cache-dir
 
@@ -46,7 +46,7 @@ RUN git checkout ${CHROMADB_VERSION}
 # Install ChromaDB's dependencies
 RUN pip install cffi fastapi maturin opentelemetry-instrumentation opentelemetry-instrumentation-fastapi patchelf --no-cache-dir
 RUN pip install -r /home/user/app/requirements.txt --no-cache-dir
-RUN if [ "$REBUILD_HNSWLIB" = "true" ]; then pip install --no-binary :all: --force-reinstall chroma-hnswlib --no-cache-dir; fi
+RUN if [ "${REBUILD_HNSWLIB}" = "true" ]; then pip install --no-binary :all: --force-reinstall chroma-hnswlib --no-cache-dir; fi
 RUN pip install grpcio grpcio-tools --no-cache-dir
 
 # Install ChromaDB

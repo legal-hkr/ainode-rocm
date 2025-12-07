@@ -1,7 +1,7 @@
 FROM archlinux
 
-ARG user_uid
-ARG user_gid
+ARG USER_UID
+ARG USER_GID
 
 # Settings
 ENV ENV="prod"
@@ -42,10 +42,10 @@ ENV WEBUI_AUTH="false"
 WORKDIR /home/user/app
 
 # Fix GIDs for groups to match host
-RUN groupmod -g $user_gid users
+RUN groupmod -g ${USER_GID} users
 
 # Add a user
-RUN useradd -u $user_uid -r -g users -s /sbin/nologin -m -c "User" user
+RUN useradd -u ${USER_UID} -r -g users -s /sbin/nologin -m -c "User" user
 
 # Install dependencies
 RUN pacman -Syu --noconfirm && pacman -S --noconfirm apache ffmpeg git npm python-pipenv sqlite vim
@@ -63,7 +63,7 @@ RUN echo -n 00000000-0000-0000-0000-000000000000 > /home/user/app/.cache/chroma/
 
 # Prepare Python virtual environment
 RUN python -m venv /home/user/venv
-ENV PATH="/home/user/venv/bin:$PATH"
+ENV PATH="/home/user/venv/bin:${PATH}"
 RUN pip install virtualenv --no-cache-dir
 RUN pip install --upgrade pip setuptools GitPython --no-cache-dir
 

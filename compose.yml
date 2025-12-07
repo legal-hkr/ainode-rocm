@@ -22,8 +22,8 @@ services:
     build:
       args:
         # UID and GID for the user, can be the same as for the local user
-        user_uid: 1000
-        user_gid: 100
+        USER_UID: 1000
+        USER_GID: 100
       dockerfile: ./docker/chroma/Dockerfile
     container_name: ainode-chroma
     hostname: ainode-chroma
@@ -47,12 +47,12 @@ services:
     build:
       args:
         # UID and GID for the user, can be the same as for the local user
-        user_uid: 1000
-        user_gid: 100
+        USER_UID: 1000
+        USER_GID: 100
         # Host's GID of the 'render' group, on Gentoo it's 28
-        render_gid: 28
+        RENDER_GID: 28
         # Host's GID of the 'video' group, on Gentoo it's 27
-        video_gid: 27
+        VIDEO_GID: 27
       dockerfile: ./docker/comfyui/Dockerfile
     container_name: ainode-comfyui
     hostname: ainode-comfyui
@@ -86,12 +86,12 @@ services:
     build:
       args:
         # UID and GID for the user, can be the same as for the local user
-        user_uid: 1000
-        user_gid: 100
+        USER_UID: 1000
+        USER_GID: 100
         # Host's GID of the 'render' group, on Gentoo it's 28
-        render_gid: 28
+        RENDER_GID: 28
         # Host's GID of the 'video' group, on Gentoo it's 27
-        video_gid: 27
+        VIDEO_GID: 27
       dockerfile: ./docker/kokoro-fastapi/Dockerfile
     container_name: ainode-kokoro-fastapi
     hostname: ainode-kokoro-fastapi
@@ -117,12 +117,12 @@ services:
     build:
       args:
         # UID and GID for the user, can be the same as for the local user
-        user_uid: 1000
-        user_gid: 100
+        USER_UID: 1000
+        USER_GID: 100
         # Host's GID of the 'render' group, on Gentoo it's 28
-        render_gid: 28
+        RENDER_GID: 28
         # Host's GID of the 'video' group, on Gentoo it's 27
-        video_gid: 27
+        VIDEO_GID: 27
       dockerfile: ./docker/ollama/Dockerfile
     container_name: ainode-ollama
     hostname: ainode-ollama
@@ -176,8 +176,8 @@ services:
     build:
       args:
         # UID and GID for the user, can be the same as for the local user
-        user_uid: 1000
-        user_gid: 100
+        USER_UID: 1000
+        USER_GID: 100
       dockerfile: ./docker/openwebui/Dockerfile
     container_name: ainode-openwebui
     depends_on:
@@ -207,8 +207,8 @@ services:
     build:
       args:
         # UID and GID for the user, can be the same as for the local user
-        user_uid: 1000
-        user_gid: 100
+        USER_UID: 1000
+        USER_GID: 100
       dockerfile: ./docker/openwebui-amnesic/Dockerfile
     container_name: ainode-openwebui-amnesic
     hostname: ainode-openwebui-amnesic
